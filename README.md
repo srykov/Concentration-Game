@@ -1,20 +1,19 @@
 # Memory Game Project
+This was a project that I developed as part of my Udacity [Front-End Web Developer Nanodegree Program](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). The project required me to build my own version of the classic memory game 'Concentration', using javascript, DOM selectors, and event listeners.  Udacity provided some starter HTML & CSS code to display a static version of the Memeory Game. I wrote the javascript to bring the game's functionality to life, as well as customizing the HTML and CSS.
 
-## Table of Contents
+## What I Learned
+This project gave me an opportunity to practice what I learned in the Web Programming with Javascript course.
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+Specifically I practiced:
+* using DOM selectors
+* using event listeners
 
-## Instructions
-
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
-
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## Getting Started
+To try The Memory Game out:
+* Download the source code
+* Open index.html in your browser.
+* Start playing by clicking any card!
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+This repository is the finished code for _my_  Pixel Art project. Therefore, I will  most likely will not accept pull requests.
