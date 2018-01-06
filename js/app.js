@@ -4,9 +4,8 @@
  const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
 
  let openCards = [];
-
  let numMoves = 0;
-
+ let numMatches = 0;
 
 document.addEventListener('DOMContentLoaded', initializeGame);
 
@@ -30,6 +29,7 @@ function endGame(){
 	const cards = deckDiv.querySelectorAll('.card');
 
 	openCards = [];
+	numMatches = 0;
 
 	for(let i = 0; i < cards.length; i++){
 		const icon = cards[i].querySelector('i');
@@ -98,92 +98,131 @@ function shuffle(array) {
 }
 
 /*
- * Flip card over.
+ * Handle click event on a card.
+ *
+ */
+function handleClickCard(event){
+
+	//only handle click events on cards
+	if(event.target.nodeName.toLowerCase() == 'li'){
+		const card = event.target;
+
+		//only handle click events on face *down* cards
+		if(!card.classList.contains('open')){
+
+			//display the card's symbol
+			flipCard(event.target);
+
+			//add the card to a list of open cards
+			addToOpenCards(event.target);
+
+			if(openCards.length %2 == 0){
+
+				const currentCard = openCards[openCards.length - 1];
+				const previousCard = openCards[openCards.length - 2];
+
+				//there is an even nuber of cards on the open cards stack, so check for a match
+				if(isMatch(currentCard, previousCard)){
+					//mark cards as matched & lock in open position
+					makeMatch(currentCard, previousCard);
+				} else{
+					//no match, after a delay (to allow user to see the cards),
+					//flip cards back over & remove from list
+					matchFail(currentCard, previousCard);
+				}
+			}
+			//increment the move counter and display it on the page
+			incrementMoveCounter();
+
+			//TODO: if all cards have matched, display a message with the final score
+		}
+
+		if(numMatches == 8){
+			winGame();
+		}
+	}
+
+}
+
+function winGame(){
+	setTimeout(function(){
+		playSound('win');
+	}, 1000);
+	endGame();
+}
+
+/*
+ * Flip card over. If the card was previously face down, display the cards symbol, and vice versa.
  */
 function flipCard(card){
+	playSound('flip');
 	card.classList.toggle('open');
 	card.classList.toggle('show');
 }
 
+/*
+ * Push card onto stack of open cards.
+ */
 function addToOpenCards(card){
+	openCards.push(card);
+}
 
-	//even number of cards in the open state, means its our first flip, push current card into the list
-	if(openCards.length % 2 == 0){
-		openCards.push(card);
+/*
+ * Check to see if the last two cards on the open cards stack are a match.
+ */
+function isMatch(currentCard, previousCard){
+
+	let matchFound = false;
+
+	//get the symbols for the last two cards, so we can compare them
+	const currentSymbol = currentCard.querySelector('i').classList.item(1);
+	const previousSymbol = previousCard.querySelector('i').classList.item(1);
+
+	if(currentSymbol === previousSymbol){
+		matchFound = true;
 	}
-	//odd number of cards already in the open state, means its our second flip, and we are looking for a match
-	else{
-		if(isMatch(card)){
-
-		} else{
-			makeMatchFail(card);
-		}
-
-	}
+	return matchFound;
 }
 
 /*
  * Perform actions require on match success.
  */
-function makeMatch(card){
-	card.classList.add('match');
-	openCards.push(card);
-}
-
-/*
- * Perform actions require  on match failure.
- */
-function makeMatchFail(card){
-	//add a delay to allow user to see the cards
+function makeMatch(currentCard, previousCard){
+	currentCard.classList.add('match');
+	previousCard.classList.add('match');
+	numMatches++;
 	setTimeout(function(){
-		//remove last card from open cards stack
-		const lastCard = openCards.pop();
-
-		// flip cards back over
-		flipCard(card);
-		flipCard(lastCard);
+		playSound('match');
 	}, 1000);
 }
 
+/*
+ * Perform actions required on match failure.
+ */
+function matchFail(currentCard, previousCard){
 
-function isMatch(card){
+	setTimeout(function(){
+		// flip cards back over
+		flipCard(currentCard);
+		flipCard(previousCard);
 
-	let match = false;
-
-	//get the icon for this card
-	const iconToMatch = card.querySelector('i').classList.item(1);
-
-	//iterate over the list of open cards and check for a match
-	for(let i = 0; i < openCards.length; i++){
-		const currentIcon = openCards[i].querySelector('i').classList.item(1);
-
-		if(iconToMatch === currentIcon){
-			match = true;
-			openCards[i].classList.add('match');
-			break;
-		}
-	}
-	return match;
+		//take the last two cards off the stack
+		openCards.pop();
+		openCards.pop();
+	}, 1000);
 }
 
 /*
- * Handle click event on a card.
+ * Play a sound, given an action.
+ *
  */
-function handleClickCard(event){
+  function playSound(action) {
+    const audio = document.querySelector(`audio[data-key="${action}"]`);
+    if (!audio) return;
 
-	if(event.target.nodeName.toLowerCase() == 'li'){
-		const card = event.target;
-
-		if(!card.classList.contains('open')){
-			//increment the number of moves
-			incrementMoveCounter();
-
-			flipCard(event.target);
-			addToOpenCards(event.target);
-		}
-	}
-
-}
+    audio.currentTime = 0;
+    audio.play();
+  }
 
 /*
  * Handle click event on the reset button
@@ -192,14 +231,3 @@ function handleReset(event){
 	endGame();
 	initializeGame();
 }
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
