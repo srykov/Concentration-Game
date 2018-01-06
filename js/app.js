@@ -3,7 +3,7 @@
  */
  const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
 
- const openCards = [];
+ let openCards = [];
 
  let numMoves = 0;
 
@@ -29,8 +29,9 @@ function endGame(){
 	const deckDiv = document.querySelector('.deck');
 	const cards = deckDiv.querySelectorAll('.card');
 
-	for(let i = 0; i < cards.length; i++){
+	openCards = [];
 
+	for(let i = 0; i < cards.length; i++){
 		const icon = cards[i].querySelector('i');
 		cards[i].removeChild(icon);
 	}
@@ -119,7 +120,7 @@ function addToOpenCards(card){
 			//remove the open/show classes from the open cards, after a delay to allow
 			//the user to see the cards
 			setTimeout(function(){
-				//remove the last card added to the open stack
+				//remove the last card added to the stack of open cards
 				const lastCard = openCards.pop();
 				lastCard.classList.remove('open');
 				lastCard.classList.remove('show');
