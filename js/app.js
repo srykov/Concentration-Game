@@ -26,9 +26,6 @@ function initializeGame(){
 	numStars = 3;
 	gameStartTime = new Date();
 
-	const time = document.querySelector('.time');
-	time.textContent = '0 hours,  0 minutes, 0 seconds';
-
 	displayCards();
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.addEventListener('click', handleReset);
@@ -47,6 +44,10 @@ function endGame(){
 		const icon = cards[i].querySelector('i');
 		cards[i].removeChild(icon);
 	}
+
+	const timer = document.querySelector('.timer');
+	timer.textContent('');
+
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.removeEventListener('click', handleReset);
 }
@@ -165,6 +166,12 @@ function handleClickCard(event){
  */
 function startTimer(){
 	gameStartTime = Date.now();
+	const timer = document.querySelector('.timer');
+	timer.textContent = 'Elapsed Time: ';
+	const time = document.createElement('span');
+	time.classList.add('time');
+	timer.appendChild(time);
+
 	timerIntervalId = setInterval(setElapsedTime, 1000);
 }
 
@@ -180,11 +187,11 @@ function setElapsedTime(){
 	seconds = Math.floor(elapsedTimeMillis/1000 % 60);
 
 	const time = document.querySelector('.time');
-	time.textContent = `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
+	time.textContent =  `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
 }
 
 /*
- * Open modal, play sound, and end game.
+ * Stop timer, open modal, play sound, and end game.
  */
 function winGame(){
 	clearInterval(timerIntervalId);
