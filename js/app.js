@@ -1,7 +1,17 @@
 /*
  * Create a list that holds all of your cards
  */
+ const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
 
+
+function displayCards(){
+	shuffle(deck);
+	for(let i = 0; i < deck.length; i++){
+		console.log(deck[i]);
+	}
+}
+
+document.addEventListener('DOMContentLoaded', displayCards);
 
 /*
  * Display the cards on the page
