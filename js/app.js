@@ -1,17 +1,13 @@
 /*
  * Create a list that holds all of your cards
  */
- const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+ const cardSet = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+
+ let numMoves = 0;
 
 
-function displayCards(){
-	shuffle(deck);
-	for(let i = 0; i < deck.length; i++){
-		console.log(deck[i]);
-	}
-}
+document.addEventListener('DOMContentLoaded', initializeGame);
 
-document.addEventListener('DOMContentLoaded', displayCards);
 
 /*
  * Display the cards on the page
@@ -19,6 +15,43 @@ document.addEventListener('DOMContentLoaded', displayCards);
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+function displayCards(){
+	shuffle(cardSet);
+
+	const deck = document.querySelector('.deck');
+	const cards = deck.querySelectorAll('.card');
+
+	for(let i = 0; i < cards.length; i++){
+
+		cards[i].classList.remove('show', 'open', 'match');
+		const icon = cards[i].querySelector('i');
+		icon.classList.add(deck[i]);
+	}
+	deck.addEventListener('click', handleClickCard);
+
+}
+
+function incrementMoveCounter(){
+	numMoves++;
+	const moves = document.querySelector('.moves');
+	moves.textContent = numMoves;
+}
+
+function resetMoveCounter(){
+	numMoves = 0;
+	const moves = document.querySelector('.moves');
+	moves.textContent = numMoves;
+}
+
+function initializeGame(){
+
+	resetMoveCounter();
+
+	displayCards();
+	const resetButton = document.querySelector('.fa-repeat');
+	resetButton.addEventListener('click', handleReset);
+}
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -35,6 +68,18 @@ function shuffle(array) {
     return array;
 }
 
+function handleClickCard(event){
+	//increment the number of moves
+	incrementMoveCounter();
+
+	const card = event.target;
+	card.classList.add('open', 'show');
+}
+
+function handleReset(event){
+
+	initializeGame();
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
