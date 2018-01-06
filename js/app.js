@@ -98,10 +98,11 @@ function shuffle(array) {
 }
 
 /*
- * Flip card over, displaying the card's symbol.
+ * Flip card over.
  */
 function flipCard(card){
-	card.classList.add('open', 'show');
+	card.classList.toggle('open');
+	card.classList.toggle('show');
 }
 
 function addToOpenCards(card){
@@ -113,25 +114,37 @@ function addToOpenCards(card){
 	//odd number of cards already in the open state, means its our second flip, and we are looking for a match
 	else{
 		if(isMatch(card)){
-			//found a match
-			card.classList.add('match');
-			openCards.push(card);
-		} else{
-			//remove the open/show classes from the open cards, after a delay to allow
-			//the user to see the cards
-			setTimeout(function(){
-				//remove the last card added to the stack of open cards
-				const lastCard = openCards.pop();
-				lastCard.classList.remove('open');
-				lastCard.classList.remove('show');
-				card.classList.remove('open');
-				card.classList.remove('show');
-			}, 1000);
 
+		} else{
+			makeMatchFail(card);
 		}
 
 	}
 }
+
+/*
+ * Perform actions require on match success.
+ */
+function makeMatch(card){
+	card.classList.add('match');
+	openCards.push(card);
+}
+
+/*
+ * Perform actions require  on match failure.
+ */
+function makeMatchFail(card){
+	//add a delay to allow user to see the cards
+	setTimeout(function(){
+		//remove last card from open cards stack
+		const lastCard = openCards.pop();
+
+		// flip cards back over
+		flipCard(card);
+		flipCard(lastCard);
+	}, 1000);
+}
+
 
 function isMatch(card){
 
@@ -157,11 +170,18 @@ function isMatch(card){
  * Handle click event on a card.
  */
 function handleClickCard(event){
-	//increment the number of moves
-	incrementMoveCounter();
 
-	flipCard(event.target);
-	addToOpenCards(event.target);
+	if(event.target.nodeName.toLowerCase() == 'li'){
+		const card = event.target;
+
+		if(!card.classList.contains('open')){
+			//increment the number of moves
+			incrementMoveCounter();
+
+			flipCard(event.target);
+			addToOpenCards(event.target);
+		}
+	}
 
 }
 
