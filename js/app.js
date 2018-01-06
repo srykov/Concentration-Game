@@ -7,6 +7,13 @@
  let numMoves = 0;
  let numMatches = 0;
 
+ let gameStartTime;
+ let seconds = 0;
+ let mins = 0;
+ let hours = 0;
+ let timerIntervalId = 0;
+ let timeStart;
+
 document.addEventListener('DOMContentLoaded', initializeGame);
 
 /*
@@ -15,6 +22,12 @@ document.addEventListener('DOMContentLoaded', initializeGame);
 function initializeGame(){
 
 	resetMoveCounter();
+	numMatches = 0;
+	numStars = 3;
+	gameStartTime = new Date();
+
+	const time = document.querySelector('.time');
+	time.textContent = '0 hours,  0 minutes, 0 seconds';
 
 	displayCards();
 	const resetButton = document.querySelector('.fa-repeat');
@@ -29,7 +42,6 @@ function endGame(){
 	const cards = deckDiv.querySelectorAll('.card');
 
 	openCards = [];
-	numMatches = 0;
 
 	for(let i = 0; i < cards.length; i++){
 		const icon = cards[i].querySelector('i');
@@ -107,6 +119,10 @@ function handleClickCard(event){
 	if(event.target.nodeName.toLowerCase() == 'li'){
 		const card = event.target;
 
+		if(numMoves == 0){
+			startTimer();
+		}
+
 		//only handle click events on face *down* cards
 		if(!card.classList.contains('open')){
 
@@ -144,7 +160,34 @@ function handleClickCard(event){
 
 }
 
+/*
+ * Record the time that the game starts.
+ */
+function startTimer(){
+	gameStartTime = Date.now();
+	timerIntervalId = setInterval(setElapsedTime, 1000);
+}
+
+/*
+ * Calculate the elapsed time and update the display of the timer.
+ */
+function setElapsedTime(){
+	const now = Date.now();
+	const elapsedTimeMillis = now - gameStartTime;
+
+	hours = Math.floor(elapsedTimeMillis/3600000);
+	mins = Math.floor(elapsedTimeMillis/60000 % 360);
+	seconds = Math.floor(elapsedTimeMillis/1000 % 60);
+
+	const time = document.querySelector('.time');
+	time.textContent = `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
+}
+
+/*
+ * Open modal, play sound, and end game.
+ */
 function winGame(){
+	clearInterval(timerIntervalId);
 	setTimeout(function(){
 		playSound('win');
 	}, 1000);

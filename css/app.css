@@ -75,7 +75,7 @@ h1 {
 
 .deck .card.open {
     transform: rotateY(0);
-    background: #d6b3e3;
+    background: #a9a9a9;
     cursor: default;
 }
 
@@ -104,10 +104,14 @@ h1 {
 }
 
 .score-panel .stars {
-    margin: 0;
     padding: 10px;
     display: inline-block;
     margin: 0 0 0 20px;
+}
+
+.score-panel .timer {
+    display: inline-block;
+    padding: 0 40px 0 40px;
 }
 
 .score-panel .stars li {
