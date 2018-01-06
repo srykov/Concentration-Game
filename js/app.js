@@ -8,6 +8,33 @@
 
 document.addEventListener('DOMContentLoaded', initializeGame);
 
+/*
+ * Perform all of the tasks necessary to initialize a new game.
+ */
+function initializeGame(){
+
+	resetMoveCounter();
+
+	displayCards();
+	const resetButton = document.querySelector('.fa-repeat');
+	resetButton.addEventListener('click', handleReset);
+}
+
+/*
+ * Perform all of the tasks necessary to end the game.
+ */
+function endGame(){
+	const deck = document.querySelector('.deck');
+	const cards = deck.querySelectorAll('.card');
+
+	for(let i = 0; i < cards.length; i++){
+
+		const icon = cards[i].querySelector('i');
+		cards[i].removeChild(icon);
+	}
+	const resetButton = document.querySelector('.fa-repeat');
+	resetButton.removeEventListener('click', handleReset);
+}
 
 /*
  * Display the cards on the page
@@ -24,32 +51,33 @@ function displayCards(){
 	for(let i = 0; i < cards.length; i++){
 
 		cards[i].classList.remove('show', 'open', 'match');
-		const icon = cards[i].querySelector('i');
-		icon.classList.add(deck[i]);
+
+		const icon = document.createElement('i');
+		icon.classList.add('fa', cardSet[i]);
+		cards[i].appendChild(icon);
 	}
 	deck.addEventListener('click', handleClickCard);
 
 }
 
+/*
+ * Increment the moves counter by one and
+ * update the display of the moves counter.
+ */
 function incrementMoveCounter(){
 	numMoves++;
 	const moves = document.querySelector('.moves');
 	moves.textContent = numMoves;
 }
 
+/*
+ * Reset the moves counter to zero and
+ * update the display of the moves counter.
+ */
 function resetMoveCounter(){
 	numMoves = 0;
 	const moves = document.querySelector('.moves');
 	moves.textContent = numMoves;
-}
-
-function initializeGame(){
-
-	resetMoveCounter();
-
-	displayCards();
-	const resetButton = document.querySelector('.fa-repeat');
-	resetButton.addEventListener('click', handleReset);
 }
 
 
@@ -77,7 +105,7 @@ function handleClickCard(event){
 }
 
 function handleReset(event){
-
+	endGame();
 	initializeGame();
 }
 
