@@ -1,7 +1,9 @@
 /*
  * Create a list that holds all of your cards
  */
- const cardSet = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+ const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+
+ const openCards = [];
 
  let numMoves = 0;
 
@@ -24,8 +26,8 @@ function initializeGame(){
  * Perform all of the tasks necessary to end the game.
  */
 function endGame(){
-	const deck = document.querySelector('.deck');
-	const cards = deck.querySelectorAll('.card');
+	const deckDiv = document.querySelector('.deck');
+	const cards = deckDiv.querySelectorAll('.card');
 
 	for(let i = 0; i < cards.length; i++){
 
@@ -43,26 +45,25 @@ function endGame(){
  *   - add each card's HTML to the page
  */
 function displayCards(){
-	shuffle(cardSet);
+	shuffle(deck);
 
-	const deck = document.querySelector('.deck');
-	const cards = deck.querySelectorAll('.card');
+	const deckDiv = document.querySelector('.deck');
+	const cards = deckDiv.querySelectorAll('.card');
 
 	for(let i = 0; i < cards.length; i++){
 
 		cards[i].classList.remove('show', 'open', 'match');
 
 		const icon = document.createElement('i');
-		icon.classList.add('fa', cardSet[i]);
+		icon.classList.add('fa', deck[i]);
 		cards[i].appendChild(icon);
 	}
-	deck.addEventListener('click', handleClickCard);
+	deckDiv.addEventListener('click', handleClickCard);
 
 }
 
 /*
- * Increment the moves counter by one and
- * update the display of the moves counter.
+ * Increment the moves counter by one and display it on the page.
  */
 function incrementMoveCounter(){
 	numMoves++;
@@ -71,8 +72,7 @@ function incrementMoveCounter(){
 }
 
 /*
- * Reset the moves counter to zero and
- * update the display of the moves counter.
+ * Reset the moves counter to zero and display it on the page.
  */
 function resetMoveCounter(){
 	numMoves = 0;
@@ -96,14 +96,77 @@ function shuffle(array) {
     return array;
 }
 
+/*
+ * Flip card over, displaying the card's symbol.
+ */
+function flipCard(card){
+	card.classList.add('open', 'show');
+}
+
+function addToOpenCards(card){
+
+	//even number of cards in the open state, means its our first flip, push current card into the list
+	if(openCards.length % 2 == 0){
+		openCards.push(card);
+	}
+	//odd number of cards already in the open state, means its our second flip, and we are looking for a match
+	else{
+		if(isMatch(card)){
+			//found a match
+			card.classList.add('match');
+			openCards.push(card);
+		} else{
+			//remove the open/show classes from the open cards, after a delay to allow
+			//the user to see the cards
+			setTimeout(function(){
+				//remove the last card added to the open stack
+				const lastCard = openCards.pop();
+				lastCard.classList.remove('open');
+				lastCard.classList.remove('show');
+				card.classList.remove('open');
+				card.classList.remove('show');
+			}, 1000);
+
+		}
+
+	}
+}
+
+function isMatch(card){
+
+	let match = false;
+
+	//get the icon for this card
+	const iconToMatch = card.querySelector('i').classList.item(1);
+
+	//iterate over the list of open cards and check for a match
+	for(let i = 0; i < openCards.length; i++){
+		const currentIcon = openCards[i].querySelector('i').classList.item(1);
+
+		if(iconToMatch === currentIcon){
+			match = true;
+			openCards[i].classList.add('match');
+			break;
+		}
+	}
+	return match;
+}
+
+/*
+ * Handle click event on a card.
+ */
 function handleClickCard(event){
 	//increment the number of moves
 	incrementMoveCounter();
 
-	const card = event.target;
-	card.classList.add('open', 'show');
+	flipCard(event.target);
+	addToOpenCards(event.target);
+
 }
 
+/*
+ * Handle click event on the reset button
+ */
 function handleReset(event){
 	endGame();
 	initializeGame();
