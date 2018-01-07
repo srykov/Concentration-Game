@@ -1,5 +1,5 @@
 /*
- * Create a list that holds all of your cards
+ * Create a list that holds all of the cards
  */
  const deck = ['fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-paper-plane-o', 'fa-paper-plane-o'];
 
@@ -11,7 +11,6 @@
  let gameStartTime;
  let formattedElapsedTime = 0;
  let timerIntervalId = 0;
- let timeStart;
 
 document.addEventListener('DOMContentLoaded', initializeGame);
 
@@ -44,8 +43,7 @@ function endGame(){
 		cards[i].removeChild(icon);
 	}
 
-	//stop the timer and clear the timer display
-	clearInterval(timerIntervalId);
+	//clear the timer display
 	const timer = document.querySelector('.timer');
 	timer.textContent = '';
 
@@ -69,9 +67,9 @@ function displayCards(){
 
 		cards[i].classList.remove('show', 'open', 'match');
 
-		const icon = document.createElement('i');
-		icon.classList.add('fa', deck[i]);
-		cards[i].appendChild(icon);
+		const newIcon = document.createElement('i');
+		newIcon.classList.add('fa', deck[i]);
+		cards[i].appendChild(newIcon);
 	}
 	deckDiv.addEventListener('click', handleClickCard);
 
@@ -192,7 +190,7 @@ function handleClickCard(event){
 			//TODO: if all cards have matched, display a message with the final score
 		}
 
-		if(numMatches == 1){
+		if(numMatches == 8){
 			winGame();
 		}
 	}
@@ -200,7 +198,8 @@ function handleClickCard(event){
 }
 
 /*
- * Record the time that the game starts.
+ * Start the timer, by recording the time that the game starts,
+ * and starting the regular updates of the timer display.
  */
 function startTimer(){
 	gameStartTime = Date.now();
@@ -211,6 +210,14 @@ function startTimer(){
 	timer.appendChild(time);
 
 	timerIntervalId = setInterval(setElapsedTime, 1000);
+}
+
+/*
+ * Set the elapsed time, and then stop the timer.
+ */
+function stopTimer(){
+	clearInterval(timerIntervalId);
+	setElapsedTime();
 }
 
 /*
@@ -232,12 +239,14 @@ function setElapsedTime(){
  * Stop timer, open modal, play sound, and end game.
  */
 function winGame(){
-
+	stopTimer();
 	setTimeout(function(){
 		displayWinnerModal();
 		playSound('win');
 	}, 1000);
-	endGame();
+	setTimeout(function(){
+		endGame();
+	}, 5000);
 }
 
 /*
