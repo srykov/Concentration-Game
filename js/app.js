@@ -6,6 +6,7 @@
  let openCards = [];
  let numMoves = 0;
  let numMatches = 0;
+ let stars = 3;
 
  let gameStartTime;
  let seconds = 0;
@@ -26,6 +27,7 @@ function initializeGame(){
 	numStars = 3;
 	gameStartTime = new Date();
 
+	calculateAndDisplayStars();
 	displayCards();
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.addEventListener('click', handleReset);
@@ -37,7 +39,6 @@ function initializeGame(){
 function endGame(){
 	const deckDiv = document.querySelector('.deck');
 	const cards = deckDiv.querySelectorAll('.card');
-
 	openCards = [];
 
 	for(let i = 0; i < cards.length; i++){
@@ -45,8 +46,10 @@ function endGame(){
 		cards[i].removeChild(icon);
 	}
 
+	//stop the timer and clear the timer display
+	clearInterval(timerIntervalId);
 	const timer = document.querySelector('.timer');
-	timer.textContent('');
+	timer.textContent = '';
 
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.removeEventListener('click', handleReset);
@@ -75,6 +78,42 @@ function displayCards(){
 	deckDiv.addEventListener('click', handleClickCard);
 
 }
+
+/*
+ * Calculate the number of stars that the player has, update the score panel.
+ */
+function calculateAndDisplayStars(){
+
+	//assign number of stars based on thresholds for number of moves made
+	if(numMoves < 30){
+		numStars = 3;
+	} else if (numMoves < 36) {
+		numStars = 2;
+	} else if (numMoves < 42){
+		numStars = 1;
+	} else {
+		numStars = 0;
+	}
+
+	//update the display of the number of stars
+	const stars = document.querySelector('.stars');
+	const starsListElements = stars.querySelectorAll('li');
+	const maxNumberOfPossibleStars = 3;
+	for(let i = 0; i < maxNumberOfPossibleStars; i++){
+		//start from last star tag, and work backwards towards the first star
+		const starTag = starsListElements[(maxNumberOfPossibleStars - i) - 1].querySelector('i');
+		//user gets this star
+		if(numStars >= (maxNumberOfPossibleStars -i)){
+			starTag.classList.add('fa-star');
+			starTag.classList.remove('fa-star-o');
+		} //user doesn't get this star
+		else{
+			starTag.classList.remove('fa-star');
+			starTag.classList.add('fa-star-o');
+		}
+	}
+}
+
 
 /*
  * Increment the moves counter by one and display it on the page.
@@ -150,6 +189,7 @@ function handleClickCard(event){
 			}
 			//increment the move counter and display it on the page
 			incrementMoveCounter();
+			calculateAndDisplayStars();
 
 			//TODO: if all cards have matched, display a message with the final score
 		}
@@ -194,7 +234,6 @@ function setElapsedTime(){
  * Stop timer, open modal, play sound, and end game.
  */
 function winGame(){
-	clearInterval(timerIntervalId);
 	setTimeout(function(){
 		playSound('win');
 	}, 1000);
@@ -235,7 +274,7 @@ function isMatch(currentCard, previousCard){
 }
 
 /*
- * Perform actions require on match success.
+ * Perform actions required on match success.
  */
 function makeMatch(currentCard, previousCard){
 	currentCard.classList.add('match');
