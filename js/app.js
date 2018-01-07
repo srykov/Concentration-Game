@@ -9,9 +9,7 @@
  let stars = 3;
 
  let gameStartTime;
- let seconds = 0;
- let mins = 0;
- let hours = 0;
+ let formattedElapsedTime = 0;
  let timerIntervalId = 0;
  let timeStart;
 
@@ -194,7 +192,7 @@ function handleClickCard(event){
 			//TODO: if all cards have matched, display a message with the final score
 		}
 
-		if(numMatches == 8){
+		if(numMatches == 1){
 			winGame();
 		}
 	}
@@ -222,22 +220,42 @@ function setElapsedTime(){
 	const now = Date.now();
 	const elapsedTimeMillis = now - gameStartTime;
 
-	hours = Math.floor(elapsedTimeMillis/3600000);
-	mins = Math.floor(elapsedTimeMillis/60000 % 360);
-	seconds = Math.floor(elapsedTimeMillis/1000 % 60);
+	const hours = Math.floor(elapsedTimeMillis/3600000);
+	const mins = Math.floor(elapsedTimeMillis/60000 % 360);
+	const seconds = Math.floor(elapsedTimeMillis/1000 % 60);
+	formattedElapsedTime = `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
 
 	const time = document.querySelector('.time');
-	time.textContent =  `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
+	time.textContent =  formattedElapsedTime;
 }
-
 /*
  * Stop timer, open modal, play sound, and end game.
  */
 function winGame(){
+
 	setTimeout(function(){
+		displayWinnerModal();
 		playSound('win');
 	}, 1000);
 	endGame();
+}
+
+/*
+ * Display a modal to announce that the user has won the game. Display
+ * game stats.
+ */
+function displayWinnerModal(){
+	const modal = document.getElementById('winnerModal');
+	modal.style.display = 'block';
+
+	const totalTime = document.querySelector('.totalTime');
+	totalTime.textContent = `You finished the game in ${formattedElapsedTime}`;
+
+	const totalMoves = document.querySelector('.totalMoves');
+	totalMoves.textContent = `You made ${numMoves} moves.`;
+
+	const finalStarRating = document.querySelector('.finalStarRating');
+	finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}.`;
 }
 
 /*

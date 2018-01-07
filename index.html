@@ -6,7 +6,8 @@
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bungee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -52,12 +53,29 @@
         </ul>
     </div>
 
-    <!--flip.wav is taken from: http://soundbible.com/419-Tiny-Button-Push.html, Recorded by Mike Koenig, used under license: Attribution 3.0-->
-    <!--tada.wav is taken from: http://soundbible.com/1003-Ta-Da.html, Recorded by Mike Koenig, used under license: Attribution 3.0-->
+    <!--flip.wav is taken from: http://soundbible.com/419-Tiny-Button-Push.html, tada.wav is taken from: http://soundbible.com/1003-Ta-Da.html, Both were recorded by Mike Koenig and used under license: Attribution 3.0-->
     <audio data-key="flip" src="sounds/flip.wav"></audio>
     <audio data-key="match" src="sounds/match.wav"></audio>
-    <audio data-key="matchFail" src="sounds/fail.wav"></audio>
     <audio data-key="win" src="sounds/tada.wav"></audio>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>Congratulations!</h1>
+        Thanks for playing Concentration.
+        <ul class="stats">
+            <li class="totalTime"></li>
+            <li class="totalMoves"></li>
+            <li class="finalStarRating"></li>
+        </ul>
+        <ul class="stars">
+            <li><i class="fa fa-spin fa-5x fa-star"></i></li>
+            <li><i class="fa fa-spin fa-5x fa-star"></i></li>
+            <li><i class="fa fa-spin fa-5x fa-star"></i></li>
+        </ul>
+      </div>
+    </div>
 
     <script src="js/app.js"></script>
 </body>
