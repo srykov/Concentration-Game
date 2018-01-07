@@ -274,6 +274,7 @@ function displayWinnerModal(){
 
 	const closeButton = document.querySelector('.close');
 	closeButton.addEventListener('click', closeWinnerModal);
+	document.addEventListener('keypress', closeWinnerModal);
 }
 
 /*
