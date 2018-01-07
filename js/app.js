@@ -246,8 +246,9 @@ function winGame(){
 	}, 1000);
 	setTimeout(function(){
 		endGame();
-	}, 5000);
+	},2500);
 }
+
 
 /*
  * Display a modal to announce that the user has won the game. Display
@@ -265,6 +266,18 @@ function displayWinnerModal(){
 
 	const finalStarRating = document.querySelector('.finalStarRating');
 	finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}.`;
+
+	const closeButton = document.querySelector('.close');
+	closeButton.addEventListener('click', closeWinnerModal);
+}
+
+/*
+ * Close the winner modal and re-initialize the game.
+ */
+function closeWinnerModal(){
+	const modal = document.getElementById('winnerModal');
+	modal.style.display = 'none';
+	initializeGame();
 }
 
 /*
