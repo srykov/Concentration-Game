@@ -9,7 +9,7 @@
  let stars = 3;
 
  let gameStartTime;
- let formattedElapsedTime = 0;
+ let formattedElapsedTime = "";
  let timerIntervalId = 0;
 
 document.addEventListener('DOMContentLoaded', initializeGame);
@@ -233,7 +233,12 @@ function setElapsedTime(){
 	const hours = Math.floor(elapsedTimeMillis/3600000);
 	const mins = Math.floor(elapsedTimeMillis/60000 % 360);
 	const seconds = Math.floor(elapsedTimeMillis/1000 % 60);
-	formattedElapsedTime = `${hours} hour${hours == 1? '':'s'}, ${mins} minute${mins == 1? '':'s'}, ${seconds} second${seconds == 1? '':'s'}`;
+
+	const formattedHours = (hours == 0 ? '': hours +  (hours == 1? ' hour, ': ' hours, '));
+	const formattedMins = (mins == 0 ? '': mins + (mins == 1? ' minute, ': ' minutes, '))
+	const formattedSeconds = seconds + (seconds == 1? ' second': ' seconds') ;
+
+	formattedElapsedTime = formattedHours + formattedMins + formattedSeconds;
 
 	const time = document.querySelector('.time');
 	time.textContent =  formattedElapsedTime;
