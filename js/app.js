@@ -24,8 +24,10 @@ function initializeGame(){
 	numStars = 3;
 	gameStartTime = new Date();
 
-	calculateAndDisplayStars();
+	const scorePanel = document.querySelector('.score-panel');
+	calculateAndDisplayStars(scorePanel);
 	displayCards();
+
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.addEventListener('click', handleReset);
 }
@@ -78,7 +80,7 @@ function displayCards(){
 /*
  * Calculate the number of stars that the player has, update the score panel.
  */
-function calculateAndDisplayStars(){
+function calculateAndDisplayStars(container){
 
 	//assign number of stars based on thresholds for number of moves made
 	if(numMoves < 30){
@@ -92,7 +94,7 @@ function calculateAndDisplayStars(){
 	}
 
 	//update the display of the number of stars
-	const stars = document.querySelector('.stars');
+	const stars = container.querySelector('.stars');
 	const starsListElements = stars.querySelectorAll('li');
 	const maxNumberOfPossibleStars = 3;
 	for(let i = 0; i < maxNumberOfPossibleStars; i++){
@@ -185,7 +187,8 @@ function handleClickCard(event){
 			}
 			//increment the move counter and display it on the page
 			incrementMoveCounter();
-			calculateAndDisplayStars();
+			const scorePanel = document.querySelector('.score-panel');
+			calculateAndDisplayStars(scorePanel);
 
 			//TODO: if all cards have matched, display a message with the final score
 		}
@@ -266,6 +269,8 @@ function displayWinnerModal(){
 
 	const finalStarRating = document.querySelector('.finalStarRating');
 	finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}.`;
+
+	calculateAndDisplayStars(modal);
 
 	const closeButton = document.querySelector('.close');
 	closeButton.addEventListener('click', closeWinnerModal);
