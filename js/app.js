@@ -95,11 +95,11 @@ function displayCards(){
 function calculateAndDisplayStars(container){
 
 	//assign number of stars based on thresholds for number of moves made
-	if(numMoves < 30){
+	if(numMoves < 28){
 		numStars = 3;
-	} else if (numMoves < 36) {
+	} else if (numMoves < 34) {
 		numStars = 2;
-	} else if (numMoves < 42){
+	} else if (numMoves < 40){
 		numStars = 1;
 	} else {
 		numStars = 0;
@@ -311,22 +311,24 @@ function displayWinnerModal(){
 	const stars = document.querySelector('.modal .stars');
 
 	const maxNumberOfPossibleStars = 3;
-	for(let i = 0; i < maxNumberOfPossibleStars; i++){
-		const starIcon = document.createElement('i');
-		starIcon.classList.add('fa');
-		starIcon.classList.add('fa-2x');
-		starIcon.classList.add('fa-star');
-		starIcon.classList.add('fa-pulse');
-		//user gets this star
-		if(i < numStars){
+	if(numStars != 0){
+		for(let i = 0; i < maxNumberOfPossibleStars; i++){
+			const starIcon = document.createElement('i');
+			starIcon.classList.add('fa');
+			starIcon.classList.add('fa-2x');
 			starIcon.classList.add('fa-star');
-			starIcon.classList.remove('fa-star-o');
-		} //user doesn't get this star
-		else{
-			starIcon.classList.remove('fa-star');
-			starIcon.classList.add('fa-star-o');
+			starIcon.classList.add('fa-pulse');
+			//user gets this star
+			if(i < numStars){
+				starIcon.classList.add('fa-star');
+				starIcon.classList.remove('fa-star-o');
+			} //user doesn't get this star
+			else{
+				starIcon.classList.remove('fa-star');
+				starIcon.classList.add('fa-star-o');
+			}
+			stars.appendChild(starIcon);
 		}
-		stars.appendChild(starIcon);
 	}
 	const closeButton = document.querySelector('.close');
 	closeButton.addEventListener('click', closeWinnerModal);
@@ -392,6 +394,11 @@ function makeMatch(currentCard, previousCard){
 	currentCard.classList.add('match');
 	previousCard.classList.add('match');
 	numMatches++;
+
+	//take the last two cards off the stack
+	openCards.pop();
+	openCards.pop();
+
 	setTimeout(function(){
 		playSound('match');
 	}, 1000);
