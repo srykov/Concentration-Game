@@ -32,6 +32,10 @@ function initializeGame(){
 	const timer = document.querySelector('.timer');
 	timer.textContent = '';
 
+	//hide the restart button in the winner modal
+	const playAgain = document.querySelector('.modal .restart');
+	playAgain.style.display = 'none';
+
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.addEventListener('click', handleReset);
 }
@@ -107,9 +111,9 @@ function calculateAndDisplayStars(container){
 	const maxNumberOfPossibleStars = 3;
 	for(let i = 0; i < maxNumberOfPossibleStars; i++){
 		//start from last star tag, and work backwards towards the first star
-		const starTag = starsListElements[(maxNumberOfPossibleStars - i) - 1].querySelector('i');
+		const starTag = starsListElements[i].querySelector('i');
 		//user gets this star
-		if(numStars >= (maxNumberOfPossibleStars -i)){
+		if(i < = numStars){
 			starTag.classList.add('fa-star');
 			starTag.classList.remove('fa-star-o');
 		} //user doesn't get this star
@@ -201,7 +205,7 @@ function handleClickCard(event){
 		}
 
 		//if all cards have been matched, display a modal with the final game stats
-		if(numMatches == 0){
+		if(numMatches == 8){
 			winGame();
 		}
 	}
