@@ -175,7 +175,7 @@ function handleClickCard(event){
 		}
 
 		//only handle click events on face *down* cards
-		if(!card.classList.contains('open')){
+		if(!card.classList.contains('open') && openCards.length < 2){
 
 			//display the card's symbol
 			flipCard(event.target);
