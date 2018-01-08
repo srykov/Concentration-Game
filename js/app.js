@@ -28,6 +28,10 @@ function initializeGame(){
 	calculateAndDisplayStars(scorePanel);
 	displayCards();
 
+	//clear the timer display
+	const timer = document.querySelector('.timer');
+	timer.textContent = '';
+
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.addEventListener('click', handleReset);
 }
@@ -44,10 +48,6 @@ function endGame(){
 		const icon = cards[i].querySelector('i');
 		cards[i].removeChild(icon);
 	}
-
-	//clear the timer display
-	const timer = document.querySelector('.timer');
-	timer.textContent = '';
 
 	const resetButton = document.querySelector('.fa-repeat');
 	resetButton.removeEventListener('click', handleReset);
@@ -119,7 +119,7 @@ function calculateAndDisplayStars(container){
 function incrementMoveCounter(){
 	numMoves++;
 	const moves = document.querySelector('.moves');
-	moves.textContent = numMoves;
+	moves.textContent = numMoves + (numMoves > 1? ' Moves' : ' Move');
 }
 
 /*
@@ -128,7 +128,7 @@ function incrementMoveCounter(){
 function resetMoveCounter(){
 	numMoves = 0;
 	const moves = document.querySelector('.moves');
-	moves.textContent = numMoves;
+	moves.textContent = '';
 }
 
 
@@ -190,10 +190,11 @@ function handleClickCard(event){
 			const scorePanel = document.querySelector('.score-panel');
 			calculateAndDisplayStars(scorePanel);
 
-			//TODO: if all cards have matched, display a message with the final score
+			//TODO:
 		}
 
-		if(numMatches == 8){
+		//if all cards have been matched, display a modal with the final game stats
+		if(numMatches == 0){
 			winGame();
 		}
 	}
@@ -207,7 +208,6 @@ function handleClickCard(event){
 function startTimer(){
 	gameStartTime = Date.now();
 	const timer = document.querySelector('.timer');
-	timer.textContent = 'Elapsed Time: ';
 	const time = document.createElement('span');
 	time.classList.add('time');
 	timer.appendChild(time);
@@ -234,15 +234,20 @@ function setElapsedTime(){
 	const mins = Math.floor(elapsedTimeMillis/60000 % 360);
 	const seconds = Math.floor(elapsedTimeMillis/1000 % 60);
 
-	const formattedHours = (hours == 0 ? '': hours +  (hours == 1? ' hour, ': ' hours, '));
-	const formattedMins = (mins == 0 ? '': mins + (mins == 1? ' minute, ': ' minutes, '))
-	const formattedSeconds = seconds + (seconds == 1? ' second': ' seconds') ;
-
-	formattedElapsedTime = formattedHours + formattedMins + formattedSeconds;
+	formattedElapsedTime = formatTimePart(hours) + ':' + formatTimePart(mins) + ':' + formatTimePart(seconds);
 
 	const time = document.querySelector('.time');
 	time.textContent =  formattedElapsedTime;
 }
+
+/*
+ * Take a number, turn it into a string and pad it with a leading zero, if it is single digit number.
+ */
+function formatTimePart(timePart){
+	let formattedTimePart = String(timePart);
+	return formattedTimePart.padStart(2,'0');
+}
+
 /*
  * Stop timer, open modal, play sound, and end game.
  */
@@ -267,17 +272,33 @@ function displayWinnerModal(){
 	modal.style.display = 'block';
 
 	const totalTime = document.querySelector('.totalTime');
-	totalTime.textContent = `You finished the game in ${formattedElapsedTime}`;
+	totalTime.textContent = `Total Time: ${formattedElapsedTime}`;
 
 	const totalMoves = document.querySelector('.totalMoves');
-	totalMoves.textContent = `You made ${numMoves} moves`;
+	totalMoves.textContent = `${numMoves}` + (numMoves > 1? ' Moves' : ' Move');
 
 	const finalStarRating = document.querySelector('.finalStarRating');
-	if(numStars > 0){
-		finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}`;
-		calculateAndDisplayStars(modal);
-	} else{
-		finalStarRating.textContent = '';
+	finalStarRating.textContent = `Star Rating: ${numStars}`;
+
+	const stars = document.querySelector('.modal .stars');
+
+	const maxNumberOfPossibleStars = 3;
+	for(let i = 0; i < maxNumberOfPossibleStars; i++){
+		const starIcon = document.createElement('i');
+		starIcon.classList.add('fa');
+		starIcon.classList.add('fa-2x');
+		starIcon.classList.add('fa-star');
+		starIcon.classList.add('fa-pulse');
+		//user gets this star
+		if(numStars >= (maxNumberOfPossibleStars - i)){
+			starIcon.classList.add('fa-star');
+			starIcon.classList.remove('fa-star-o');
+		} //user doesn't get this star
+		else{
+			starIcon.classList.remove('fa-star');
+			starIcon.classList.add('fa-star-o');
+		}
+		stars.appendChild(starIcon);
 	}
 
 	const closeButton = document.querySelector('.close');

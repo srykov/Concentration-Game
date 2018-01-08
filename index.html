@@ -13,25 +13,23 @@
 <body>
 
     <div class="container">
-        <header>
-            <h1>Concentration</h1>
-        </header>
-
         <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
-
-        	<span class="moves">0</span> Moves
+            <ul class="stars">
+                <li><i class="fa fa-2x fa-star"></i></li>
+                <li><i class="fa fa-2x fa-star"></i></li>
+                <li><i class="fa fa-2x fa-star"></i></li>
+            </ul>
+            <span class="moves"></span>
 
             <div class="timer"><span class="time"> </span></div>
 
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fa fa-repeat fa-2x"></i>
+            </div>
         </section>
+        <header>
+            <h1>Concentration</h1>
+        </header>
 
         <ul class="deck">
             <li class="card"></li>
@@ -62,17 +60,12 @@
     <div id="winnerModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h1>Congratulations!</h1>
-        Thanks for playing Concentration.
-        <ul class="stats">
-            <li class="totalTime"></li>
-            <li class="totalMoves"></li>
-            <li class="finalStarRating"></li>
-        </ul>
-        <ul class="stars">
-            <li><i class="fa fa-border fa-4x fa-star"></i></li>
-            <li><i class="fa fa-border fa-4x fa-star"></i></li>
-            <li><i class="fa fa-border fa-4x fa-star"></i></li>
+        <h2>Congratulations!</h2>
+        <div class="stats">
+            <div class="totalTime"></div>
+            <div class="totalMoves"></div>
+            <div class="finalStarRating"></div>
+            <li class="stars"></li>
         </ul>
       </div>
     </div>
