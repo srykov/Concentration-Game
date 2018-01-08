@@ -111,9 +111,9 @@ function calculateAndDisplayStars(container){
 	const maxNumberOfPossibleStars = 3;
 	for(let i = 0; i < maxNumberOfPossibleStars; i++){
 		//start from last star tag, and work backwards towards the first star
-		const starTag = starsListElements[i].querySelector('i');
+		const starTag = starsListElements[(maxNumberOfPossibleStars - i) - 1].querySelector('i');
 		//user gets this star
-		if(i < = numStars){
+		if(numStars >= (maxNumberOfPossibleStars -i)){
 			starTag.classList.add('fa-star');
 			starTag.classList.remove('fa-star-o');
 		} //user doesn't get this star
@@ -318,7 +318,7 @@ function displayWinnerModal(){
 		starIcon.classList.add('fa-star');
 		starIcon.classList.add('fa-pulse');
 		//user gets this star
-		if(numStars >= (maxNumberOfPossibleStars - i)){
+		if(i < numStars){
 			starIcon.classList.add('fa-star');
 			starIcon.classList.remove('fa-star-o');
 		} //user doesn't get this star
