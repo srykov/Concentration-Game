@@ -44,9 +44,17 @@ function endGame(){
 	const cards = deckDiv.querySelectorAll('.card');
 	openCards = [];
 
+	hideScorePanel();
+
 	for(let i = 0; i < cards.length; i++){
 		const icon = cards[i].querySelector('i');
 		cards[i].removeChild(icon);
+	}
+
+	//clear the modal stars
+	const modalStars = document.querySelectorAll('.modal .stars i');
+	for(let i = 0; i < modalStars.length; i++){
+		modalStars[i].remove();
 	}
 
 	const resetButton = document.querySelector('.fa-repeat');
@@ -159,6 +167,7 @@ function handleClickCard(event){
 
 		if(numMoves == 0){
 			startTimer();
+			showScorePanel();
 		}
 
 		//only handle click events on face *down* cards
@@ -189,16 +198,30 @@ function handleClickCard(event){
 			incrementMoveCounter();
 			const scorePanel = document.querySelector('.score-panel');
 			calculateAndDisplayStars(scorePanel);
-
-			//TODO:
 		}
 
 		//if all cards have been matched, display a modal with the final game stats
-		if(numMatches == 0){
+		if(numMatches == 8){
 			winGame();
 		}
 	}
 
+}
+
+/*
+ * Show the score panel.
+ */
+function showScorePanel() {
+	const scorePanel = document.querySelector('.score-panel');
+	scorePanel.style.display = 'flex';
+}
+
+/*
+ * Hide the score panel.
+ */
+function hideScorePanel() {
+	const scorePanel = document.querySelector('.score-panel');
+	scorePanel.style.display = 'none';
 }
 
 /*
@@ -259,7 +282,7 @@ function winGame(){
 	}, 1000);
 	setTimeout(function(){
 		endGame();
-	},2500);
+	},5000);
 }
 
 
@@ -392,6 +415,7 @@ function matchFail(currentCard, previousCard){
  * Handle click event on the reset button
  */
 function handleReset(event){
+	playSound('reset');
 	endGame();
 	initializeGame();
 }
