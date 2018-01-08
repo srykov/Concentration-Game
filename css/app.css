@@ -203,9 +203,20 @@ h2 {
     color: #ffff00;
 }
 
-.modal li {
-    list-style: none;
+.modal .restart {
+    color: #ff6a00;
+    display:none;
 }
+
+.modal .restart:hover,
+.modal .restart:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
 
 /*tablet*/
 @media screen and (min-width:413px) and (max-width:769px) {

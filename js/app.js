@@ -201,7 +201,7 @@ function handleClickCard(event){
 		}
 
 		//if all cards have been matched, display a modal with the final game stats
-		if(numMatches == 8){
+		if(numMatches == 0){
 			winGame();
 		}
 	}
@@ -282,6 +282,7 @@ function winGame(){
 	}, 1000);
 	setTimeout(function(){
 		endGame();
+		displayPlayAgain();
 	},5000);
 }
 
@@ -323,11 +324,20 @@ function displayWinnerModal(){
 		}
 		stars.appendChild(starIcon);
 	}
-
 	const closeButton = document.querySelector('.close');
 	closeButton.addEventListener('click', closeWinnerModal);
 	document.addEventListener('keypress', closeWinnerModal);
 }
+
+/*
+ * Show buttons to close winner modal and play again.
+ */
+function displayPlayAgain(){
+	const playAgain = document.querySelector('.modal .restart');
+	playAgain.style.display = 'block';
+	playAgain.addEventListener('click', closeWinnerModal);
+}
+
 
 /*
  * Close the winner modal and re-initialize the game.
