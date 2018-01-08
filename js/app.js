@@ -270,12 +270,15 @@ function displayWinnerModal(){
 	totalTime.textContent = `You finished the game in ${formattedElapsedTime}`;
 
 	const totalMoves = document.querySelector('.totalMoves');
-	totalMoves.textContent = `You made ${numMoves} moves.`;
+	totalMoves.textContent = `You made ${numMoves} moves`;
 
 	const finalStarRating = document.querySelector('.finalStarRating');
-	finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}.`;
-
-	calculateAndDisplayStars(modal);
+	if(numStars > 0){
+		finalStarRating.textContent = `Your rating is ${numStars} star${numStars == 1? '':'s'}`;
+		calculateAndDisplayStars(modal);
+	} else{
+		finalStarRating.textContent = '';
+	}
 
 	const closeButton = document.querySelector('.close');
 	closeButton.addEventListener('click', closeWinnerModal);
