@@ -183,7 +183,7 @@ h2 {
 
 /* The Close Button */
 .close {
-    color: #aaa;
+    color: #a9a9a9;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -191,7 +191,7 @@ h2 {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #ff6a00;
     text-decoration: none;
     cursor: pointer;
 }
@@ -210,7 +210,7 @@ h2 {
 
 .modal .restart:hover,
 .modal .restart:focus {
-    color: black;
+    color: #1bcc5f;
     text-decoration: none;
     cursor: pointer;
 }

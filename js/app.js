@@ -287,7 +287,7 @@ function winGame(){
 	setTimeout(function(){
 		endGame();
 		displayPlayAgain();
-	},5000);
+	},4000);
 }
 
 
@@ -351,6 +351,7 @@ function displayPlayAgain(){
 function closeWinnerModal(){
 	const modal = document.getElementById('winnerModal');
 	modal.style.display = 'none';
+	playSound('reset');
 	initializeGame();
 }
 
