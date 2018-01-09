@@ -16,4 +16,4 @@ To try The Memory Game out:
 
 ## Contributing
 
-This repository is the finished code for _my_  Pixel Art project. Therefore, I will  most likely will not accept pull requests.
+This repository is the finished code for _my_ Memory Game project. Therefore, I will  most likely will not accept pull requests.
