@@ -99,10 +99,8 @@ function calculateAndDisplayStars(container){
 		numStars = 3;
 	} else if (numMoves < 34) {
 		numStars = 2;
-	} else if (numMoves < 40){
-		numStars = 1;
 	} else {
-		numStars = 0;
+		numStars = 1;
 	}
 
 	//update the display of the number of stars
