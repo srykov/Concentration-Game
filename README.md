@@ -14,7 +14,7 @@ Specifically I practiced:
 You can try The Memory Game out here:
 https://srykov.github.io/fend-memory-game/
 
-Alternatively you can try the game out by:
+Alternatively you can try the game out by doing the following:
 * Download the source code
 * Open index.html in your browser.
 * Start playing by clicking any card!
