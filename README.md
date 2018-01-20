@@ -11,7 +11,10 @@ Specifically I practiced:
 * using event listeners
 
 ## Getting Started
-To try The Memory Game out:
+You can try The Memory Game out here:
+https://srykov.github.io/fend-memory-game/
+
+Alternatively you can try the game out by:
 * Download the source code
 * Open index.html in your browser.
 * Start playing by clicking any card!
