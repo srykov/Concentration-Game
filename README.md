@@ -12,7 +12,7 @@ Specifically I practiced:
 
 ## Getting Started
 You can try The Memory Game out here:
-https://srykov.github.io/fend-memory-game/
+https://srykov.github.io/Concentration-Game/
 
 Alternatively you can try the game out by doing the following:
 * Download the source code
